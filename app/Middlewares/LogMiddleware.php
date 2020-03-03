@@ -72,7 +72,7 @@ class LogMiddleware
             'ip' => $_SERVER['REMOTE_ADDR']
         ];
 
-        $this->logger->info('API_LOGS', $data);
+        $this->logger->info("$method {$data['url']}", $data);
 
         return $response;
     }
