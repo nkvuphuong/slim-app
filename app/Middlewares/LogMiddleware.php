@@ -60,19 +60,15 @@ class LogMiddleware
         }
 
         $data = [
-            'access_token' => $headers['Authorization'][0] ?? '',
-            'url' => $request->getServerParam('REDIRECT_URL'),
-            'request_method' => $method,
             'request_header' => Parse::toJSON($headers),
             'request' => Parse::toJSON($requestData),
             'response_header' => $response->getHeaders(),
             'response_status_code' => $response->getStatusCode(),
             'response' =>  $response->getBody()->getContents(),
-            'time' => time(),
             'ip' => $_SERVER['REMOTE_ADDR']
         ];
 
-        $this->logger->info("$method {$data['url']}", $data);
+        $this->logger->info("$method {$request->getServerParam('REDIRECT_URL')}", $data);
 
         return $response;
     }
