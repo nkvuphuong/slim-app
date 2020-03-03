@@ -45,7 +45,7 @@ return function (ContainerBuilder $containerBuilder) {
                 'after' => function (Response $response, $arguments) {
                     //Check token in database
                     $token = $arguments['token'];
-                    $tokenData = AccessToken::all()->find($token);
+                    $tokenData = AccessToken::find($token);
 
                     if (!$tokenData) {
 
