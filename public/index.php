@@ -5,6 +5,7 @@ use DI\Bridge\Slim\Bridge;
 use DI\ContainerBuilder;
 use DI\DependencyException;
 use DI\NotFoundException;
+use Psr\Http\Message\ServerRequestInterface;
 use Slim\Factory\ServerRequestCreatorFactory;
 
 require __DIR__ . '/../vendor/autoload.php';
@@ -53,6 +54,14 @@ $middleware($app);
 $routes = require __DIR__ . '/../config/routes.php';
 $routes($app);
 
+
+// Create Request object from globals
+$serverRequestCreator = ServerRequestCreatorFactory::create();
+$request = $serverRequestCreator->createServerRequestFromGlobals();
+
+// Add Routing Middleware
+$app->addRoutingMiddleware();
+
 /** @var bool $displayErrorDetails */
 try {
     $displayErrorDetails = (boolean)$container->get('settings')['displayErrorDetails'];
@@ -64,12 +73,26 @@ try {
     die($e->getMessage());
 }
 
+// Define Custom Error Handler
+$customErrorHandler = function (
+    ServerRequestInterface $request,
+    Throwable $exception,
+    bool $displayErrorDetails,
+    bool $logErrors,
+    bool $logErrorDetails
+) use ($app) {
+    $payload = ['error' => $exception->getMessage()];
 
-// Create Request object from globals
-$serverRequestCreator = ServerRequestCreatorFactory::create();
-$request = $serverRequestCreator->createServerRequestFromGlobals();
+    $response = $app->getResponseFactory()->createResponse();
+    $response->getBody()->write(
+        json_encode($payload, JSON_UNESCAPED_UNICODE)
+    );
 
-// Add Routing Middleware
-$app->addRoutingMiddleware();
+    return $response;
+};
+
+// Add Error Middleware
+$errorMiddleware = $app->addErrorMiddleware($displayErrorDetails, $logErrors, $logErrorDetails);
+$errorMiddleware->setDefaultErrorHandler($customErrorHandler);
 
 $app->run();
