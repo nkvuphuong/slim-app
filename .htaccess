@@ -1,0 +1,14 @@
+RewriteEngine on
+RewriteRule ^$ public/ [L]
+RewriteRule (.*) public/$1 [L]
+RewriteRule .* - [env=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+<Files .ht*>
+	Deny from all
+</Files>
+<Files *.env>
+	Deny from all
+</Files>
+<Files *.env.example>
+	Deny from all
+</Files>
