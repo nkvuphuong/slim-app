@@ -1,15 +1,14 @@
 <?php
 declare(strict_types=1);
 
-use App\Application\Actions\User\ListUsersAction;
-use App\Application\Actions\User\ViewUserAction;
-use Psr\Http\Message\ResponseInterface as Response;
-use Psr\Http\Message\ServerRequestInterface as Request;
+use App\Controllers\UserController;
 use Slim\App;
 use Slim\Interfaces\RouteCollectorProxyInterface as Group;
 
 return function (App $app) {
-    $app->get('/', function (Request $request, Response $response) {
-        $response->getBody()->write(json_encode('xxxx'));
-        return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
-    });};
+    $app->group('/users', function (Group $group) {
+        $controllerClass = UserController::class;
+        $group->get('', [$controllerClass, 'index']);
+        $group->get('/{id}', [$controllerClass, 'find']);
+    });
+};
