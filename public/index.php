@@ -1,11 +1,10 @@
 <?php
 declare(strict_types=1);
 
-use App\Application\Handlers\HttpErrorHandler;
-use App\Application\Handlers\ShutdownHandler;
-use App\Application\ResponseEmitter\ResponseEmitter;
+use DI\Bridge\Slim\Bridge;
 use DI\ContainerBuilder;
-use Slim\Factory\AppFactory;
+use DI\DependencyException;
+use DI\NotFoundException;
 use Slim\Factory\ServerRequestCreatorFactory;
 
 require __DIR__ . '/../vendor/autoload.php';
@@ -32,10 +31,14 @@ $repositories = require __DIR__ . '/../config/repositories.php';
 $repositories($containerBuilder);
 
 // Build PHP-DI Container instance
-$container = $containerBuilder->build();
+try {
+    $container = $containerBuilder->build();
+} catch (Exception $e) {
+    die($e->getMessage());
+}
 
 // Instantiate the app
-$app = \DI\Bridge\Slim\Bridge::create($container);
+$app = Bridge::create($container);
 $callableResolver = $app->getCallableResolver();
 
 //Database
@@ -51,9 +54,15 @@ $routes = require __DIR__ . '/../config/routes.php';
 $routes($app);
 
 /** @var bool $displayErrorDetails */
-$displayErrorDetails = (boolean) $container->get('settings')['displayErrorDetails'];
-$logErrors = (boolean) $container->get('settings')['logErrors'];
-$logErrorDetails = (boolean) $container->get('settings')['logErrorDetails'];
+try {
+    $displayErrorDetails = (boolean)$container->get('settings')['displayErrorDetails'];
+    $logErrors = (boolean)$container->get('settings')['logErrors'];
+    $logErrorDetails = (boolean)$container->get('settings')['logErrorDetails'];
+} catch (DependencyException $e) {
+    die($e->getMessage());
+} catch (NotFoundException $e) {
+    die($e->getMessage());
+}
 
 
 // Create Request object from globals

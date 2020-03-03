@@ -4,24 +4,23 @@
 namespace App\Controllers;
 
 
-use Psr\Http\Message\ResponseInterface as Response;
+use Slim\Http\Response as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
+use Psr\Log\LoggerInterface;
 
 class UserController
 {
-    public function __construct()
+    public function __construct(LoggerInterface $logger)
     {
     }
 
     public function index(Request $request, Response $response)
     {
-        $response->getBody()->write('OK');
-        return $response;
+        return $response->withJson(['x' => '2'], 500);
     }
 
     public function find($id, Response $response)
     {
-        $response->getBody()->write($id);
-        return $response;
+        return $response->withJson($id, 200);
     }
 }
