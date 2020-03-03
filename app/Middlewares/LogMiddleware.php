@@ -8,7 +8,6 @@ use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Server\RequestHandlerInterface as RequestHandler;
-use Underscore\Parse;
 use Psr\Log\LoggerInterface;
 
 class LogMiddleware
