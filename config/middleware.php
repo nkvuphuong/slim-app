@@ -5,5 +5,7 @@ use App\Middlewares\LogMiddleware;
 use Slim\App;
 
 return function (App $app) {
-    $app->add(new LogMiddleware($app->getContainer()));
+    $app
+        ->add(new LogMiddleware($app->getContainer()))
+        ->add($app->getContainer()->get('jwt_auth'));
 };
