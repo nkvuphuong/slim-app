@@ -1,12 +1,19 @@
 <?php
 declare(strict_types=1);
 
+use App\Controllers\AuthController;
 use App\Controllers\UserController;
 use Slim\App;
 use Slim\Interfaces\RouteCollectorProxyInterface as Group;
 
 return function (App $app) {
     $jwtAuth = $app->getContainer()->get('jwt_auth');
+
+    $app->group('/auth', function (Group $group) use ($jwtAuth) {
+        $controllerClass = AuthController::class;
+        $group->post('/login', [$controllerClass, 'login']);
+        $group->get('/logout', [$controllerClass, 'logout'])->add($jwtAuth);
+    });
 
     $app->group('/users', function (Group $group) {
         $controllerClass = UserController::class;
