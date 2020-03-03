@@ -60,8 +60,8 @@ class LogMiddleware
         }
 
         $data = [
-            'request_header' => Parse::toJSON($headers),
-            'request' => Parse::toJSON($requestData),
+            'request_header' => $headers,
+            'request' => $requestData,
             'response_header' => $response->getHeaders(),
             'response_status_code' => $response->getStatusCode(),
             'response' =>  $response->getBody()->getContents(),
