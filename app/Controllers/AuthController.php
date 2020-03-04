@@ -5,7 +5,6 @@ namespace App\Controllers;
 
 
 use App\Repositories\Contracts\UserInterface;
-use App\Repositories\Eloquent\UserRepository;
 use Psr\Log\LoggerInterface;
 use Slim\Http\Response;
 use Slim\Http\ServerRequest;
