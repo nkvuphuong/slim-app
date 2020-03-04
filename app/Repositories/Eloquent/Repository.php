@@ -78,7 +78,7 @@ abstract class Repository implements RepositoryInterface {
      * @return mixed
      */
     public function delete($id) {
-        return $this->model::query()->destroy($id);
+        return $this->model->destroy($id);
     }
 
     /**

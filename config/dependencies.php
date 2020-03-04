@@ -2,7 +2,9 @@
 declare(strict_types=1);
 
 use App\Models\AccessToken;
+use App\Repositories\Contracts\AuthInterface;
 use App\Repositories\Contracts\UserInterface;
+use App\Repositories\Eloquent\AuthRepository;
 use App\Repositories\Eloquent\UserRepository;
 use DI\ContainerBuilder;
 use Monolog\Handler\StreamHandler;
@@ -32,6 +34,9 @@ return function (ContainerBuilder $containerBuilder) {
         },
         UserInterface::class => function () {
             return new UserRepository(new Illuminate\Container\Container());
+        },
+        AuthInterface::class => function () {
+            return new AuthRepository(new Illuminate\Container\Container());
         },
         'jwt_auth' => function () {
             return new JwtAuthentication([
