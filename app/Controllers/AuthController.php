@@ -4,7 +4,7 @@
 namespace App\Controllers;
 
 
-use App\Repositories\Contracts\UserRepositoryInterface;
+use App\Repositories\Eloquent\UserRepository;
 use Psr\Log\LoggerInterface;
 use Slim\Http\Response;
 use Slim\Http\ServerRequest;
@@ -13,7 +13,7 @@ class AuthController extends BaseController
 {
     private $userRepository;
 
-    public function __construct(LoggerInterface $logger, UserRepositoryInterface $userRepository)
+    public function __construct(LoggerInterface $logger, UserRepository $userRepository)
     {
         parent::__construct($logger);
         $this->userRepository = $userRepository;

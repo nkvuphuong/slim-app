@@ -7,15 +7,13 @@ namespace App\Repositories\Eloquent;
 use App\Models\User;
 use App\Repositories\Contracts\UserRepositoryInterface;
 
-class UserRepository implements UserRepositoryInterface
+class UserRepository extends Repository
 {
-    public  function all()
+    /**
+     * @inheritDoc
+     */
+    function model()
     {
-        return User::all();
-    }
-
-    public function find($id)
-    {
-        return User::query()->find($id);
+        return User::class;
     }
 }
