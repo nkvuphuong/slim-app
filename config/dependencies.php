@@ -1,7 +1,6 @@
 <?php
 declare(strict_types=1);
 
-use App\Models\AccessToken;
 use App\Repositories\Contracts\AccessTokenInterface;
 use App\Repositories\Contracts\UserInterface;
 use App\Repositories\Eloquent\AccessTokenRepository;
@@ -38,7 +37,7 @@ return function (ContainerBuilder $containerBuilder) {
         AccessTokenInterface::class => function () {
             return new AccessTokenRepository(new Illuminate\Container\Container());
         },
-        'jwt_auth' => function () {
+        'jwt_auth' => function (AccessTokenInterface $accessToken) {
             return new JwtAuthentication([
                 'secret' => getenv('JWT_SECRET'),
                 'secure' => false,
@@ -52,10 +51,10 @@ return function (ContainerBuilder $containerBuilder) {
                     return $response
                         ->withHeader("Content-Type", "application/json");
                 },
-                'after' => function (Response $response, $arguments) {
+                'after' => function (Response $response, $arguments) use ($accessToken) {
                     //Check token in database
                     $token = $arguments['token'];
-                    $tokenData = AccessToken::find($token);
+                    $tokenData = $accessToken->find($token);
 
                     if (!$tokenData) {
 
