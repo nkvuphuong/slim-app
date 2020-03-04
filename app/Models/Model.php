@@ -4,11 +4,13 @@
 namespace App\Models;
 
 
+use Illuminate\Database\Eloquent\Collection;
+
 class Model extends \Illuminate\Database\Eloquent\Model
 {
     /**
      * @param $id
-     * @return Model[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model|null
+     * @return Model[]|Collection|\Illuminate\Database\Eloquent\Model|null
      */
     protected static function find($id)
     {
