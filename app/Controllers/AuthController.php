@@ -4,6 +4,7 @@
 namespace App\Controllers;
 
 
+use App\Models\User;
 use Slim\Http\Response;
 use Slim\Http\ServerRequest;
 
