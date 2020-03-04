@@ -2,6 +2,8 @@
 declare(strict_types=1);
 
 use App\Models\AccessToken;
+use App\Repositories\Contracts\UserRepositoryInterface;
+use App\Repositories\Eloquents\UserRepository;
 use DI\ContainerBuilder;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -27,6 +29,9 @@ return function (ContainerBuilder $containerBuilder) {
             $logger->pushHandler($handler);
 
             return $logger;
+        },
+        UserRepositoryInterface::class => function () {
+            return new UserRepository();
         },
         'jwt_auth' => function () {
             return new JwtAuthentication([
