@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 use App\Models\AccessToken;
 use App\Repositories\Contracts\UserRepositoryInterface;
-use App\Repositories\Eloquents\UserRepository;
+use App\Repositories\Eloquent\UserRepository;
 use DI\ContainerBuilder;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
